@@ -10,7 +10,7 @@ import UIKit
 
 class TodoListViewController: UITableViewController {
     
-    let itemArray = ["Покормить Луну", "Купить шампунь", "Купить абсент"]
+    var itemArray = ["Покормить Луну", "Купить шампунь", "Купить абсент"]
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -18,7 +18,7 @@ class TodoListViewController: UITableViewController {
         
     }
     
-    //MARK - Table view Datasource methods
+    //MARK: - Table view Datasource methods
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "TodoItemCell", for: indexPath)
@@ -30,7 +30,7 @@ class TodoListViewController: UITableViewController {
         return itemArray.count
     }
     
-    //MARK - Table view delagate methods
+    //MARK: - Table view delagate methods
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath){
         tableView.deselectRow(at: indexPath, animated: true)
@@ -43,7 +43,33 @@ class TodoListViewController: UITableViewController {
         print(itemArray[indexPath.row])
     }
     
+    //MARK: - Add new items
+    
+    @IBAction func addButtonPressed(_ sender: UIBarButtonItem) {
+        
+        //выношу поле для ввода текста в UIAlertController в область видимости функции для доступности его внутри замыканий
+        var textField = UITextField()
+        
+        //создание контроллера окна всплывающего предупреждения
+        let alert = UIAlertController(title: "Add new Todo item", message: "", preferredStyle: .alert)
+        let action = UIAlertAction(title: "Add Item", style: .default) { action in
+            //то, что случится, когда пользователь нажмёт кнопку Add Item в окне контроллера предупреждения alert
+            self.itemArray.append(textField.text!)
+            self.tableView.reloadData()
+        }
+        //добавляю поле ввода текста во всплывающее окно
+        alert.addTextField { (alertTextfield) in
+            alertTextfield.placeholder = "Create new item"
+            //присваиваю внешней переменной ссылку на поле ввода текста
+            textField = alertTextfield
+        }
+        alert.addAction(action)
+        //вызов вьюконтроллера
+        
+        present(alert, animated: true, completion: nil)
 
+    }
+    
     
 }
 
