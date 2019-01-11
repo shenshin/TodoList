@@ -10,12 +10,16 @@ import UIKit
 
 class TodoListViewController: UITableViewController {
     
-    var itemArray = ["Покормить Луну", "Купить шампунь", "Купить абсент"]
-
+    var itemArray = [String]()    
+    
+    let defaults = UserDefaults()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        
+        if let items = defaults.array(forKey: "TodoListArray") as? [String] {
+            itemArray = items
+        }
     }
     
     //MARK: - Table view Datasource methods
@@ -55,6 +59,9 @@ class TodoListViewController: UITableViewController {
         let action = UIAlertAction(title: "Add Item", style: .default) { action in
             //то, что случится, когда пользователь нажмёт кнопку Add Item в окне контроллера предупреждения alert
             self.itemArray.append(textField.text!)
+            
+            self.defaults.set(self.itemArray, forKey: "TodoListArray")
+            
             self.tableView.reloadData()
         }
         //добавляю поле ввода текста во всплывающее окно
