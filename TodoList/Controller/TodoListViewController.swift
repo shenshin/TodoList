@@ -8,6 +8,8 @@
 
 import UIKit
 
+let DEFAULTS = "TodoListArray"
+
 class TodoListViewController: UITableViewController {
     
     var itemArray = [Item]()
@@ -22,9 +24,9 @@ class TodoListViewController: UITableViewController {
         itemArray.append(Item(title: "Спасти всех голодающих кошек", done: false))
         
         // Do any additional setup after loading the view, typically from a nib.
-//        if let items = defaults.array(forKey: "TodoListArray") as? [String] {
-//            itemArray = items
-//        }
+        if let items = defaults.array(forKey: DEFAULTS) as? [Item] {
+            itemArray = items
+        }
     }
     
     //MARK: - Table view Datasource methods
@@ -67,7 +69,7 @@ class TodoListViewController: UITableViewController {
             //добавить новый элемент в массив itemArray
             self.itemArray.append(Item(title: textField.text!, done: false))
             //сохранить массив элементов во время выгрузки программы из памяти
-            self.defaults.set(self.itemArray, forKey: "TodoListArray1")
+            self.defaults.set(self.itemArray, forKey: DEFAULTS)
             //обновить tableView
             self.tableView.reloadData()
         }
