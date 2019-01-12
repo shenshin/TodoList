@@ -7,26 +7,20 @@
 //
 
 import UIKit
-
-let DEFAULTS = "TodoListArray"
+//имя файла для сохранения массива элементов Item
+let PATH_COMPONENT = "Items.plist"
 
 class TodoListViewController: UITableViewController {
     
     var itemArray = [Item]()
-    
-    let defaults = UserDefaults()
-    
+    //создание файла хранения данных
+    let dataFilePath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!.appendingPathComponent(PATH_COMPONENT)
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        itemArray.append(Item(title: "Покормить Луну", done: false))
-        itemArray.append(Item(title: "Выкормить ворона", done: false))
-        itemArray.append(Item(title: "Спасти всех голодающих кошек", done: false))
-        
         // Do any additional setup after loading the view, typically from a nib.
-        if let items = defaults.array(forKey: DEFAULTS) as? [Item] {
-            itemArray = items
-        }
+        loadItems()
     }
     
     //MARK: - Table view Datasource methods
@@ -51,7 +45,7 @@ class TodoListViewController: UITableViewController {
         
         itemArray[indexPath.row].done = !itemArray[indexPath.row].done
         
-        tableView.reloadData()
+        saveItems()
     }
     
     //MARK: - Add new items
@@ -67,12 +61,13 @@ class TodoListViewController: UITableViewController {
             //то, что случится, когда пользователь нажмёт кнопку Add Item в окне контроллера предупреждения alert
             
             //добавить новый элемент в массив itemArray
-            self.itemArray.append(Item(title: textField.text!, done: false))
+            if textField.text!.count > 0 {
+                self.itemArray.append(Item(title: textField.text!, done: false))
+            }
             //сохранить массив элементов во время выгрузки программы из памяти
-            self.defaults.set(self.itemArray, forKey: DEFAULTS)
-            //обновить tableView
-            self.tableView.reloadData()
+            self.saveItems()
         }
+        
         //добавляю поле ввода текста во всплывающее окно
         alert.addTextField { (alertTextfield) in
             alertTextfield.placeholder = "Create new item"
@@ -80,12 +75,34 @@ class TodoListViewController: UITableViewController {
             textField = alertTextfield
         }
         alert.addAction(action)
-        //вызов вьюконтроллера
         
+        //вызов вьюконтроллера        
         present(alert, animated: true, completion: nil)
 
     }
     
+    private func saveItems(){
+        // создаёт .plist файл и записывает в него содержимое массива itemArray
+        let encoder = PropertyListEncoder()
+        do {
+            let data = try encoder.encode(self.itemArray)
+            try data.write(to: self.dataFilePath)
+        } catch {
+            print("Error encoding Item array: \(error.localizedDescription)")
+        }
+        self.tableView.reloadData()
+    }
+    
+    private func loadItems(){
+        do {
+            if let data = try? Data(contentsOf: dataFilePath) {
+                let decoder = PropertyListDecoder()
+                self.itemArray = try decoder.decode([Item].self, from: data)
+            }
+        } catch {
+            print("Error decoding Item array: \(error.localizedDescription)")
+        }
+    }
     
 }
 
