@@ -62,7 +62,6 @@
 				78D92F2921E945BE001E6BCD /* Model */,
 				78D92F2B21E945EB001E6BCD /* View */,
 				7884DC9221E660EF00CCA67E /* Assets.xcassets */,
-				7884DC9421E660EF00CCA67E /* LaunchScreen.storyboard */,
 				7884DC9721E660EF00CCA67E /* Info.plist */,
 			);
 			path = TodoList;
@@ -89,6 +88,7 @@
 		78D92F2B21E945EB001E6BCD /* View */ = {
 			isa = PBXGroup;
 			children = (
+				7884DC9421E660EF00CCA67E /* LaunchScreen.storyboard */,
 				7884DC8F21E660ED00CCA67E /* Main.storyboard */,
 			);
 			path = View;

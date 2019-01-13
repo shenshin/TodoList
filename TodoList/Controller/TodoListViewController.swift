@@ -1,8 +1,8 @@
 //
-//  ViewController.swift
+//  TodoListViewController.swift
 //  TodoList
 //
-//  Created by Алесь Шеншин on 09/01/2019.
+//  Created by Ales Shenshin on 09/01/2019.
 //  Copyright © 2019 Shenshin. All rights reserved.
 //
 
@@ -85,7 +85,6 @@ class TodoListViewController: UITableViewController {
     }
     
     private func saveItems(){
-
         do {
             try context.save()
         } catch {
@@ -94,14 +93,29 @@ class TodoListViewController: UITableViewController {
         self.tableView.reloadData()
     }
     
-    private func loadItems(){
-        let request: NSFetchRequest<Item> = Item.fetchRequest()
+    private func loadItems(_ request: NSFetchRequest<Item> = Item.fetchRequest()){
         do {
             itemArray = try context.fetch(request)
         } catch {
             print("Error fetching data from context \(error)")
         }
+        tableView.reloadData()
+    }
+}
+
+//MARK: - Search bar methods
+
+extension TodoListViewController: UISearchBarDelegate {
+
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+    
+        let request: NSFetchRequest<Item> = Item.fetchRequest()
+        
+        request.predicate = NSPredicate(format: "title CONTAINS[cd] %@", searchBar.text!)
+        
+        request.sortDescriptors = [NSSortDescriptor(key: "title", ascending: true)]
+
+        loadItems(request)
     }
 
 }
-
