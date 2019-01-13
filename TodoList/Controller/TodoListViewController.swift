@@ -7,14 +7,13 @@
 //
 
 import UIKit
-//имя файла для сохранения массива элементов Item
-let PATH_COMPONENT = "Items.plist"
+import CoreData
 
 class TodoListViewController: UITableViewController {
     
     var itemArray = [Item]()
-    //создание файла хранения данных
-    let dataFilePath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!.appendingPathComponent(PATH_COMPONENT)
+    //создаю контекст для CoreData (временное хранилище информации)
+    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -59,10 +58,14 @@ class TodoListViewController: UITableViewController {
         let alert = UIAlertController(title: "Add new Todo item", message: "", preferredStyle: .alert)
         let action = UIAlertAction(title: "Add Item", style: .default) { action in
             //то, что случится, когда пользователь нажмёт кнопку Add Item в окне контроллера предупреждения alert
+            //получаю доступ к обьекту класса AppDelegate, из него вынимаю ссылку на CoreData
             
+            let newItem = Item(context: self.context)
             //добавить новый элемент в массив itemArray
             if textField.text!.count > 0 {
-                self.itemArray.append(Item(title: textField.text!, done: false))
+                newItem.title = textField.text!
+                newItem.done = false
+                self.itemArray.append(newItem)
             }
             //сохранить массив элементов во время выгрузки программы из памяти
             self.saveItems()
@@ -82,27 +85,23 @@ class TodoListViewController: UITableViewController {
     }
     
     private func saveItems(){
-        // создаёт .plist файл и записывает в него содержимое массива itemArray
-        let encoder = PropertyListEncoder()
+
         do {
-            let data = try encoder.encode(self.itemArray)
-            try data.write(to: self.dataFilePath)
+            try context.save()
         } catch {
-            print("Error encoding Item array: \(error.localizedDescription)")
+            print(error.localizedDescription)
         }
         self.tableView.reloadData()
     }
     
     private func loadItems(){
+        let request: NSFetchRequest<Item> = Item.fetchRequest()
         do {
-            if let data = try? Data(contentsOf: dataFilePath) {
-                let decoder = PropertyListDecoder()
-                self.itemArray = try decoder.decode([Item].self, from: data)
-            }
+            itemArray = try context.fetch(request)
         } catch {
-            print("Error decoding Item array: \(error.localizedDescription)")
+            print("Error fetching data from context \(error)")
         }
     }
-    
+
 }
 

@@ -8,7 +8,7 @@
 
 import Foundation
 
-class Item: Codable {
+class ItemClass: Codable {
     var title: String
     var done: Bool
     init(title: String, done: Bool){
