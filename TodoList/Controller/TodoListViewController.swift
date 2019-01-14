@@ -11,6 +11,7 @@ import CoreData
 
 class TodoListViewController: UITableViewController {
     
+    var category: String?
     var itemArray = [Item]()
     //создаю контекст для CoreData (временное хранилище информации)
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
@@ -20,8 +21,8 @@ class TodoListViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // Do any additional setup after loading the view, typically from a nib.
         loadItems()
+        print("Категория \(category ?? "неизвестна")")
     }
     
     //MARK: - Table view Datasource methods
@@ -70,9 +71,9 @@ class TodoListViewController: UITableViewController {
                 newItem.title = textField.text!
                 newItem.done = false
                 self.itemArray.append(newItem)
+                //сохранить массив элементов во время выгрузки программы из памяти
+                self.saveItems()
             }
-            //сохранить массив элементов во время выгрузки программы из памяти
-            self.saveItems()
         }
         
         //добавляю поле ввода текста во всплывающее окно
@@ -92,18 +93,16 @@ class TodoListViewController: UITableViewController {
         do {
             try context.save()
         } catch {
-            print(error.localizedDescription)
+            print("Error saving Items data: \(error.localizedDescription)")
         }
-        
-            self.tableView.reloadData()
-        
+        tableView.reloadData()
     }
     
     func loadItems(_ request: NSFetchRequest<Item> = Item.fetchRequest()){
         do {
             itemArray = try context.fetch(request)
         } catch {
-            print("Error fetching data from context \(error)")
+            print("Error fetching Items data from context \(error)")
         }
         tableView.reloadData()
     }
