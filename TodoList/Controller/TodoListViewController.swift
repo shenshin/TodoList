@@ -11,19 +11,16 @@ import CoreData
 
 class TodoListViewController: UITableViewController {
     
-    var category: String?
+    var selectedCategory: Category? {
+        didSet{
+            loadItems()
+        }
+    }
     var itemArray = [Item]()
     //создаю контекст для CoreData (временное хранилище информации)
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
     @IBOutlet weak var searchBar: UISearchBar!
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        loadItems()
-        print("Категория \(category ?? "неизвестна")")
-    }
     
     //MARK: - Table view Datasource methods
     
@@ -31,7 +28,7 @@ class TodoListViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "TodoItemCell", for: indexPath)
         //текст ячейки таблицы
         cell.textLabel?.text = itemArray[indexPath.row].title
-        //отобрать ли галочку в ячейке таблицы в зависимости от параметра done
+        //отображать ли галочку в ячейке таблицы в зависимости от параметра done
         cell.accessoryType = itemArray[indexPath.row].done ? .checkmark : .none
         return cell
     }
@@ -63,13 +60,12 @@ class TodoListViewController: UITableViewController {
         let alert = UIAlertController(title: "Add new Todo item", message: "", preferredStyle: .alert)
         let action = UIAlertAction(title: "Add Item", style: .default) { action in
             //то, что случится, когда пользователь нажмёт кнопку Add Item в окне контроллера предупреждения alert
-            //получаю доступ к обьекту класса AppDelegate, из него вынимаю ссылку на CoreData
-            
             let newItem = Item(context: self.context)
             //добавить новый элемент в массив itemArray
             if textField.text!.count > 0 {
                 newItem.title = textField.text!
                 newItem.done = false
+                newItem.parentCategory = self.selectedCategory
                 self.itemArray.append(newItem)
                 //сохранить массив элементов во время выгрузки программы из памяти
                 self.saveItems()
@@ -98,7 +94,13 @@ class TodoListViewController: UITableViewController {
         tableView.reloadData()
     }
     
-    func loadItems(_ request: NSFetchRequest<Item> = Item.fetchRequest()){
+    func loadItems(_ request: NSFetchRequest<Item> = Item.fetchRequest(), _ predicate: NSPredicate? = nil){
+        let categoryPredicate = NSPredicate(format: "parentCategory.name MATCHES %@", selectedCategory!.name!)
+        if predicate != nil {
+            request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [categoryPredicate, predicate!])
+        } else {
+            request.predicate = categoryPredicate
+        }
         do {
             itemArray = try context.fetch(request)
         } catch {
@@ -116,11 +118,11 @@ extension TodoListViewController: UISearchBarDelegate {
         
         let request: NSFetchRequest<Item> = Item.fetchRequest()
         
-        request.predicate = NSPredicate(format: "title CONTAINS[cd] %@", searchBar.text!)
+        let predicate = NSPredicate(format: "title CONTAINS[cd] %@", searchBar.text!)
         
         request.sortDescriptors = [NSSortDescriptor(key: "title", ascending: true)]
 
-        loadItems(request)
+        loadItems(request, predicate)
     }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {

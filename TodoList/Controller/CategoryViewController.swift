@@ -2,7 +2,7 @@
 //  CategoryViewController.swift
 //  TodoList
 //
-//  Created by Алесь Шеншин on 14/01/2019.
+//  Created by Ales Shenshin on 14/01/2019.
 //  Copyright © 2019 Shenshin. All rights reserved.
 //
 
@@ -12,7 +12,9 @@ import CoreData
 class CategoryViewController: UITableViewController {
 
     var catsArray = [Category]()
-    var currentCat: String?
+    
+    //хранит ссылку на категорию, которая была выбрана при нажатии на ячейку table view
+    var selectedCategory: Category?
     
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
@@ -78,8 +80,7 @@ class CategoryViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        
-        currentCat = catsArray[indexPath.row].name
+        selectedCategory = catsArray[indexPath.row]
         //выполнить переход в TodoList view controller со списком Item, соответствующим выбранной категории
         performSegue(withIdentifier: "TodoItems", sender: self)
     }
@@ -88,7 +89,7 @@ class CategoryViewController: UITableViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "TodoItems" {
             let todoListVC = segue.destination as! TodoListViewController
-            todoListVC.category = currentCat!
+            todoListVC.selectedCategory = selectedCategory
         }
     }
     /*
