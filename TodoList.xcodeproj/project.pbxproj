@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7822CFCC21ED558E0076AA37 /* RealmItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7822CFCB21ED558E0076AA37 /* RealmItem.swift */; };
+		7822CFCE21ED55D40076AA37 /* RealmCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7822CFCD21ED55D40076AA37 /* RealmCategory.swift */; };
 		7884DC8C21E660ED00CCA67E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7884DC8B21E660ED00CCA67E /* AppDelegate.swift */; };
 		7884DC8E21E660ED00CCA67E /* TodoListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7884DC8D21E660ED00CCA67E /* TodoListViewController.swift */; };
 		7884DC9121E660ED00CCA67E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7884DC8F21E660ED00CCA67E /* Main.storyboard */; };
@@ -20,6 +22,8 @@
 
 /* Begin PBXFileReference section */
 		6EFD08C896A4D7724DDE6CFB /* Pods-TodoList.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TodoList.release.xcconfig"; path = "Pods/Target Support Files/Pods-TodoList/Pods-TodoList.release.xcconfig"; sourceTree = "<group>"; };
+		7822CFCB21ED558E0076AA37 /* RealmItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmItem.swift; sourceTree = "<group>"; };
+		7822CFCD21ED55D40076AA37 /* RealmCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmCategory.swift; sourceTree = "<group>"; };
 		7884DC8821E660ED00CCA67E /* TodoList.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TodoList.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7884DC8B21E660ED00CCA67E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7884DC8D21E660ED00CCA67E /* TodoListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoListViewController.swift; sourceTree = "<group>"; };
@@ -89,6 +93,8 @@
 			children = (
 				78D92F5021EAD33D001E6BCD /* DataModel.xcdatamodeld */,
 				78D92F2721E9451C001E6BCD /* ItemClass.swift */,
+				7822CFCB21ED558E0076AA37 /* RealmItem.swift */,
+				7822CFCD21ED55D40076AA37 /* RealmCategory.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -247,7 +253,9 @@
 				7884DC8E21E660ED00CCA67E /* TodoListViewController.swift in Sources */,
 				78D92F5221EAD33D001E6BCD /* DataModel.xcdatamodeld in Sources */,
 				78D92F2821E9451C001E6BCD /* ItemClass.swift in Sources */,
+				7822CFCC21ED558E0076AA37 /* RealmItem.swift in Sources */,
 				7884DC8C21E660ED00CCA67E /* AppDelegate.swift in Sources */,
+				7822CFCE21ED55D40076AA37 /* RealmCategory.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

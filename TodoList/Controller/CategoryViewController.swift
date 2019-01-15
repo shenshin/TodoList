@@ -7,50 +7,50 @@
 //
 
 import UIKit
-import CoreData
+import RealmSwift
 
 class CategoryViewController: UITableViewController {
-
-    var catsArray = [Category]()
+    
+    let realm = try! Realm()
+    
+    var realmCatsResults: Results<RealmCategory>?
     
     //хранит ссылку на категорию, которая была выбрана при нажатии на ячейку table view
-    var selectedCategory: Category?
+    var selectedCategory: RealmCategory?
     
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        loadCats()
+        realmLoadCats()
     }
     // MARK: - Table view data source methods
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return catsArray.count
+        return realmCatsResults?.count ?? 1
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "CategoryCell", for: indexPath)
-        cell.textLabel?.text = catsArray[indexPath.row].name
+        cell.textLabel?.text = realmCatsResults?[indexPath.row].name ?? "No categories added yet"
         return cell
     }
     
     // MARK: - Data manipulation methods
     
-    func loadCats(_ request: NSFetchRequest<Category> = Category.fetchRequest()){
-        do {
-            catsArray = try context.fetch(request)
-        } catch {
-            print("Error fetching Category data from context: \(error)")
-        }
+    func realmLoadCats(){
+        realmCatsResults = realm.objects(RealmCategory.self)
         tableView.reloadData()
     }
     
-    func saveCats(){
+    func realmSaveCats(_ category: RealmCategory) {
         do {
-            try context.save()
+            try realm.write {
+                realm.add(category)
+            }
         } catch {
-            print("Error saving Category data: \(error)")
+            print("Error saving Realm Category data: \(error)")
         }
         tableView.reloadData()
     }
@@ -61,11 +61,10 @@ class CategoryViewController: UITableViewController {
         var textField = UITextField()
         let alert = UIAlertController(title: "Add new category", message: "", preferredStyle: .alert)
         let action = UIAlertAction(title: "Add", style: .default) { (action) in
-            let newCat = Category(context: self.context)
             if textField.text!.count > 0 {
-                newCat.name = textField.text!
-                self.catsArray.append(newCat)
-                self.saveCats()
+                let category = RealmCategory()
+                category.name = textField.text!
+                self.realmSaveCats(category)
             }
         }
         alert.addTextField { (alertTextField) in
@@ -80,7 +79,7 @@ class CategoryViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        selectedCategory = catsArray[indexPath.row]
+        selectedCategory = realmCatsResults?[indexPath.row]
         //выполнить переход в TodoList view controller со списком Item, соответствующим выбранной категории
         performSegue(withIdentifier: "TodoItems", sender: self)
     }
