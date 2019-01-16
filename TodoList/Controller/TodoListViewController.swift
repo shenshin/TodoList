@@ -8,6 +8,7 @@
 
 import UIKit
 import RealmSwift
+import SwipeCellKit
 
 class TodoListViewController: UITableViewController {
     
@@ -21,10 +22,16 @@ class TodoListViewController: UITableViewController {
     
     @IBOutlet weak var searchBar: UISearchBar!
     
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        tableView.rowHeight = 65.0
+    }
+    
     //MARK: - Table view Datasource methods
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "TodoItemCell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "TodoItemCell", for: indexPath) as! SwipeTableViewCell
+        cell.delegate = self
         
         if let item = realmItems?[indexPath.row] {
             //текст ячейки таблицы
@@ -104,15 +111,7 @@ class TodoListViewController: UITableViewController {
         present(alert, animated: true, completion: nil)
         
     }
-    
-//    func saveItems(){
-////        do {
-////            try context.save()
-////        } catch {
-////            print("Error saving Items data: \(error.localizedDescription)")
-////        }
-//        tableView.reloadData()
-//    }
+
     
     func loadItems(){
         realmItems = selectedCategory?.items.sorted(byKeyPath: "dateCreated", ascending: true)
@@ -137,6 +136,34 @@ extension TodoListViewController: UISearchBarDelegate {
                 self.searchBar.resignFirstResponder()
             }
         }
+    }
+    
+}
+
+//MARK: - Swipe Table View
+extension TodoListViewController: SwipeTableViewCellDelegate {
+    
+    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> [SwipeAction]? {
+        guard orientation == .right else { return nil }
+        
+        let deleteAction = SwipeAction(style: .destructive, title: "Delete") { action, indexPath in
+            // handle action by updating model with deletion
+            if let item = self.realmItems?[indexPath.row] {
+                do {
+                    try self.realm.write {
+                        self.realm.delete(item)
+                    }
+                } catch {
+                    print("Error saving Realm Category data: \(error)")
+                }
+                tableView.reloadData()
+            }
+        }
+        
+        // customize the action appearance
+        deleteAction.image = UIImage(named: "Trash")
+        
+        return [deleteAction]
     }
     
 }
