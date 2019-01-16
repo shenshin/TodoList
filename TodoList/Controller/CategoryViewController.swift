@@ -56,7 +56,7 @@ class CategoryViewController: SwipeTableViewController {
     
     // MARK: - Delete Data From Swipe
     
-    override func updateMode(at indexPath: IndexPath) {
+    override func updateModel(at indexPath: IndexPath) {
         if let category = self.realmCatsResults?[indexPath.row] {
             do {
                 try self.realm.write {
