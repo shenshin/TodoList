@@ -156,7 +156,7 @@ extension TodoListViewController: SwipeTableViewCellDelegate {
                 } catch {
                     print("Error saving Realm Category data: \(error)")
                 }
-                tableView.reloadData()
+                //tableView.reloadData()
             }
         }
         
@@ -166,4 +166,10 @@ extension TodoListViewController: SwipeTableViewCellDelegate {
         return [deleteAction]
     }
     
+    func tableView(_ tableView: UITableView, editActionsOptionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> SwipeOptions {
+        var options = SwipeOptions()
+        options.expansionStyle = .destructive
+        options.transitionStyle = .border
+        return options
+    }
 }
