@@ -18,8 +18,6 @@ class CategoryViewController: UITableViewController {
     //хранит ссылку на категорию, которая была выбрана при нажатии на ячейку table view
     var selectedCategory: RealmCategory?
     
-    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-    
     override func viewDidLoad() {
         super.viewDidLoad()
 

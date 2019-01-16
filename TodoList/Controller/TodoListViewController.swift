@@ -80,6 +80,7 @@ class TodoListViewController: UITableViewController {
                         try self.realm.write {
                             let newItem = RealmItem()
                             newItem.title = textField.text!
+                            newItem.dateCreated = Date()
                             currentCategory.items.append(newItem)
                             //self.realm.add(newItem)
                         }
@@ -104,17 +105,17 @@ class TodoListViewController: UITableViewController {
         
     }
     
-    func saveItems(){
-//        do {
-//            try context.save()
-//        } catch {
-//            print("Error saving Items data: \(error.localizedDescription)")
-//        }
-        tableView.reloadData()
-    }
+//    func saveItems(){
+////        do {
+////            try context.save()
+////        } catch {
+////            print("Error saving Items data: \(error.localizedDescription)")
+////        }
+//        tableView.reloadData()
+//    }
     
     func loadItems(){
-        realmItems = selectedCategory?.items.sorted(byKeyPath: "title", ascending: true)
+        realmItems = selectedCategory?.items.sorted(byKeyPath: "dateCreated", ascending: true)
         tableView.reloadData()
     }
 }
@@ -124,14 +125,8 @@ class TodoListViewController: UITableViewController {
 extension TodoListViewController: UISearchBarDelegate {
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        
-//        let request: NSFetchRequest<Item> = Item.fetchRequest()
-//
-//        let predicate = NSPredicate(format: "title CONTAINS[cd] %@", searchBar.text!)
-//
-//        request.sortDescriptors = [NSSortDescriptor(key: "title", ascending: true)]
-
-        loadItems()
+        realmItems = realmItems?.filter("title CONTAINS[cd] %@", searchBar.text!).sorted(byKeyPath: "dateCreated", ascending: true)
+        tableView.reloadData()
     }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
