@@ -22,10 +22,9 @@ class TodoListViewController: SwipeTableViewController {
     
     @IBOutlet weak var searchBar: UISearchBar!
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        tableView.rowHeight = 65.0
-    }
+//    override func viewDidLoad() {
+//        super.viewDidLoad()
+//    }
     
     //MARK: - Table view Datasource methods
     
@@ -119,10 +118,10 @@ class TodoListViewController: SwipeTableViewController {
     // MARK: - Delete Data From Swipe
     
     override func updateModel(at indexPath: IndexPath) {
-        if let category = self.realmItems?[indexPath.row] {
+        if let item = self.realmItems?[indexPath.row] {
             do {
                 try self.realm.write {
-                    self.realm.delete(category)
+                    self.realm.delete(item)
                 }
             } catch {
                 print("Error saving Realm Category data: \(error)")
