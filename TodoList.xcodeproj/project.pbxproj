@@ -10,6 +10,7 @@
 		7822CFCC21ED558E0076AA37 /* RealmItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7822CFCB21ED558E0076AA37 /* RealmItem.swift */; };
 		7822CFCE21ED55D40076AA37 /* RealmCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7822CFCD21ED55D40076AA37 /* RealmCategory.swift */; };
 		7822CFD121EF526F0076AA37 /* SwipeTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7822CFD021EF526F0076AA37 /* SwipeTableViewController.swift */; };
+		7822CFD321F1AA4A0076AA37 /* TableBGColour.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7822CFD221F1AA4A0076AA37 /* TableBGColour.swift */; };
 		7884DC8C21E660ED00CCA67E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7884DC8B21E660ED00CCA67E /* AppDelegate.swift */; };
 		7884DC8E21E660ED00CCA67E /* TodoListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7884DC8D21E660ED00CCA67E /* TodoListViewController.swift */; };
 		7884DC9121E660ED00CCA67E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7884DC8F21E660ED00CCA67E /* Main.storyboard */; };
@@ -24,6 +25,7 @@
 		7822CFCB21ED558E0076AA37 /* RealmItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmItem.swift; sourceTree = "<group>"; };
 		7822CFCD21ED55D40076AA37 /* RealmCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmCategory.swift; sourceTree = "<group>"; };
 		7822CFD021EF526F0076AA37 /* SwipeTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeTableViewController.swift; sourceTree = "<group>"; };
+		7822CFD221F1AA4A0076AA37 /* TableBGColour.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableBGColour.swift; sourceTree = "<group>"; };
 		7884DC8821E660ED00CCA67E /* TodoList.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TodoList.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7884DC8B21E660ED00CCA67E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7884DC8D21E660ED00CCA67E /* TodoListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoListViewController.swift; sourceTree = "<group>"; };
@@ -91,6 +93,7 @@
 			children = (
 				7822CFCB21ED558E0076AA37 /* RealmItem.swift */,
 				7822CFCD21ED55D40076AA37 /* RealmCategory.swift */,
+				7822CFD221F1AA4A0076AA37 /* TableBGColour.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -202,6 +205,7 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-TodoList/Pods-TodoList-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/ChameleonFramework/ChameleonFramework.framework",
 				"${BUILT_PRODUCTS_DIR}/Realm/Realm.framework",
 				"${BUILT_PRODUCTS_DIR}/RealmSwift/RealmSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/SwipeCellKit/SwipeCellKit.framework",
@@ -210,6 +214,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ChameleonFramework.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Realm.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RealmSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwipeCellKit.framework",
@@ -250,6 +255,7 @@
 			files = (
 				78D92F5421EC048D001E6BCD /* CategoryViewController.swift in Sources */,
 				7884DC8E21E660ED00CCA67E /* TodoListViewController.swift in Sources */,
+				7822CFD321F1AA4A0076AA37 /* TableBGColour.swift in Sources */,
 				7822CFCC21ED558E0076AA37 /* RealmItem.swift in Sources */,
 				7884DC8C21E660ED00CCA67E /* AppDelegate.swift in Sources */,
 				7822CFD121EF526F0076AA37 /* SwipeTableViewController.swift in Sources */,

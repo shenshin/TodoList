@@ -8,10 +8,9 @@
 
 import UIKit
 import RealmSwift
+import ChameleonFramework
 
 class CategoryViewController: SwipeTableViewController {
-
-    let realm = try! Realm()
     
     var realmCatsResults: Results<RealmCategory>?
     
@@ -20,7 +19,10 @@ class CategoryViewController: SwipeTableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        realmLoadCats()
+        realmLoadCats() 
+    }
+    override func viewWillAppear(_ animated: Bool) {
+        navigationController?.navigationBar.tintColor = UIColor.flatWhite()
     }
     
     // MARK: - Table view data source methods
@@ -32,6 +34,9 @@ class CategoryViewController: SwipeTableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = super.tableView(tableView, cellForRowAt: indexPath)
         cell.textLabel?.text = realmCatsResults?[indexPath.row].name ?? "No categories added yet"
+        if let table = realmCatsResults?[indexPath.row] {
+            bgColour(table, cell)
+        }
         return cell
     }
     

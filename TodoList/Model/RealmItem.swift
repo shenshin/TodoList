@@ -9,7 +9,7 @@
 import Foundation
 import RealmSwift
 
-class RealmItem: Object {
+class RealmItem: Table {
     @objc dynamic var title: String = ""
     @objc dynamic var done: Bool = false
     @objc dynamic var dateCreated: Date?

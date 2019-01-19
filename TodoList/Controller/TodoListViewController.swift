@@ -9,10 +9,11 @@
 import UIKit
 import RealmSwift
 import SwipeCellKit
+import ChameleonFramework
 
 class TodoListViewController: SwipeTableViewController {
     
-    let realm = try! Realm()
+    
     var selectedCategory: RealmCategory? {
         didSet{
             loadItems()
@@ -21,10 +22,23 @@ class TodoListViewController: SwipeTableViewController {
     var realmItems: Results<RealmItem>?
     
     @IBOutlet weak var searchBar: UISearchBar!
+
+    override func viewWillAppear(_ animated: Bool) {
+        title = selectedCategory?.name
+        guard let navbar = navigationController?.navigationBar else {fatalError("Navigation bar is not accessible")}
+        guard let bgColor = UIColor(hexString: selectedCategory?.colour) else {fatalError("Background colour can't be known")}
+        navbar.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor : ContrastColorOf(backgroundColor: bgColor, returnFlat: true)]
+        navbar.barTintColor = bgColor
+        navbar.tintColor = ContrastColorOf(backgroundColor: bgColor, returnFlat: true)
+        searchBar.barTintColor = bgColor
+    }
     
-//    override func viewDidLoad() {
-//        super.viewDidLoad()
-//    }
+    override func viewWillDisappear(_ animated: Bool) {
+        guard let orinalColour = UIColor(hexString: "1D9BF6") else {fatalError()}
+        navigationController?.navigationBar.barTintColor = orinalColour
+        //navigationController?.navigationBar.tintColor = UIColor.flatWhite()
+        navigationController?.navigationBar.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor : UIColor.flatWhite()]
+    }
     
     //MARK: - Table view Datasource methods
     
@@ -33,12 +47,19 @@ class TodoListViewController: SwipeTableViewController {
         if let item = realmItems?[indexPath.row] {
             //текст ячейки таблицы
             cell.textLabel?.text = item.title
+            
+            if let colour = UIColor(hexString: selectedCategory!.colour).darken(byPercentage:CGFloat(indexPath.row) / CGFloat(realmItems!.count)) {
+                cell.backgroundColor = colour
+                cell.textLabel?.textColor = ContrastColorOf(backgroundColor: colour, returnFlat: true)
+            }
             //отображать ли галочку в ячейке таблицы в зависимости от параметра done
             cell.accessoryType = item.done ? .checkmark : .none
         } else {
             cell.textLabel?.text = "No Items added yet"
         }
-        
+//        if let table = realmItems?[indexPath.row] {
+//            bgColour(table, cell)
+//        }
         return cell
     }
     

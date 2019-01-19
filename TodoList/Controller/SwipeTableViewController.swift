@@ -8,18 +8,51 @@
 
 import UIKit
 import SwipeCellKit
+import RealmSwift
+import ChameleonFramework
 
 class SwipeTableViewController: UITableViewController, SwipeTableViewCellDelegate {
+    
+    let realm = try! Realm()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.rowHeight = 65.0
+        tableView.separatorStyle = .none
     }
     //MARK: - TableView data source methods
+    
+    func bgColour(_ table: Table, _ cell: UITableViewCell) {
+        
+        if table.colour == "" {
+            if let colour: String = UIColor.randomFlat()?.hexValue(){
+                saveColour(colour, table)
+                cell.backgroundColor = UIColor(hexString: colour)
+                cell.textLabel?.textColor = ContrastColorOf(backgroundColor: UIColor(hexString: colour), returnFlat: true)
+            } else {
+                saveColour(UIColor.white.hexValue(), table)
+                cell.backgroundColor = UIColor.white
+            }
+        } else {
+            cell.backgroundColor = UIColor(hexString: table.colour)
+            cell.textLabel?.textColor = ContrastColorOf(backgroundColor: UIColor(hexString: table.colour), returnFlat: true)
+        }
+    }
+    
+    func saveColour(_ colour: String, _ table: Table){
+        do {
+            try realm.write {
+                table.colour = colour
+            }
+        } catch {
+            print("Can't save table view cell bg colour: ", error)
+        }
+    }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! SwipeTableViewCell
         cell.delegate = self
+        
         return cell
     }
     
@@ -47,4 +80,22 @@ class SwipeTableViewController: UITableViewController, SwipeTableViewCellDelegat
     func updateModel(at indexPath: IndexPath) {
         
     }
+    
+    // MARK: - Data manipulation methods
+    
+//    func realmLoadCats(){
+//        realmCatsResults = realm.objects(RealmCategory.self)
+//        tableView.reloadData()
+//    }
+//    
+//    func realmSaveCats(_ category: RealmCategory) {
+//        do {
+//            try realm.write {
+//                realm.add(category)
+//            }
+//        } catch {
+//            print("Error saving Realm Category data: \(error)")
+//        }
+//        tableView.reloadData()
+//    }
 }
