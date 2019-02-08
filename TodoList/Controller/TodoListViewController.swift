@@ -79,8 +79,8 @@ class TodoListViewController: SwipeTableViewController {
             } catch {
                 print("Error saving Item \"done\" status: ", error)
             }
+            tableView.cellForRow(at: indexPath)?.accessoryType = item.done ? .checkmark : .none
         }
-        tableView.reloadData()
         self.searchBar.resignFirstResponder()
         
     }
