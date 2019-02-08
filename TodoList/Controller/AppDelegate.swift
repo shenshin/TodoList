@@ -19,7 +19,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         do {
             _ = try Realm()
-            print(Realm.Configuration.defaultConfiguration.fileURL ?? "Не могу найти файл базы данных")
+            print(Realm.Configuration.defaultConfiguration.fileURL ?? NSLocalizedString("Can't find database file", comment: ""))
         } catch {
             fatalError(error.localizedDescription)
         }

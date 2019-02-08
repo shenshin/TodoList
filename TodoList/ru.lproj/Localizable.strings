@@ -1,0 +1,11 @@
+/* hello world */
+"Add new category" = "Добавить новую категорию";
+
+/* No comment provided by engineer. */
+"Create new Category" = "Создать новую категорию";
+
+/* No comment provided by engineer. */
+"No categories added yet" = "Категории ещё не добавлены";
+
+"Add" = "Добавить";
+"Can't find database file" = "Не могу найти файл базы данных";

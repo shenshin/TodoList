@@ -33,7 +33,7 @@ class CategoryViewController: SwipeTableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = super.tableView(tableView, cellForRowAt: indexPath)
-        cell.textLabel?.text = realmCatsResults?[indexPath.row].name ?? "No categories added yet"
+        cell.textLabel?.text = realmCatsResults?[indexPath.row].name ?? NSLocalizedString("No categories added yet", comment: "")
         if let table = realmCatsResults?[indexPath.row] {
             bgColour(table, cell)
         }
@@ -77,8 +77,8 @@ class CategoryViewController: SwipeTableViewController {
     
     @IBAction func addButtonPressed(_ sender: UIBarButtonItem) {
         var textField = UITextField()
-        let alert = UIAlertController(title: "Add new category", message: "", preferredStyle: .alert)
-        let action = UIAlertAction(title: "Add", style: .default) { (action) in
+        let alert = UIAlertController(title: NSLocalizedString("Add new category", comment: "hello world"), message: NSLocalizedString("", comment: ""), preferredStyle: .alert)
+        let action = UIAlertAction(title: NSLocalizedString("Add", comment: ""), style: .default) { (action) in
             if textField.text!.count > 0 {
                 let category = RealmCategory()
                 category.name = textField.text!
@@ -86,7 +86,7 @@ class CategoryViewController: SwipeTableViewController {
             }
         }
         alert.addTextField { (alertTextField) in
-            alertTextField.placeholder = "Create new Category"
+            alertTextField.placeholder = NSLocalizedString("Create new Category", comment: "")
             textField = alertTextField
         }
         alert.addAction(action)
