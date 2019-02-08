@@ -51,6 +51,7 @@ class TodoListViewController: SwipeTableViewController {
             if let colour = UIColor(hexString: selectedCategory!.colour).darken(byPercentage:CGFloat(indexPath.row) / CGFloat(realmItems!.count)) {
                 cell.backgroundColor = colour
                 cell.textLabel?.textColor = ContrastColorOf(backgroundColor: colour, returnFlat: true)
+                cell.tintColor = ContrastColorOf(backgroundColor: colour, returnFlat: true)
             }
             //отображать ли галочку в ячейке таблицы в зависимости от параметра done
             cell.accessoryType = item.done ? .checkmark : .none
